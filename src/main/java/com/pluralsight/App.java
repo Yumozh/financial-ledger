@@ -21,11 +21,21 @@ public class App {
         System.out.println("====================================");
         System.out.println();
 
-        //Ledger - Read and Display All Transactions
+        //Add from newest to older display!!!!!!
+        //Ledger - Read and Display
+        ArrayList<Transaction> transactionsList = readTransactions();
+        printTransactionList(transactionsList);
+
+
+
+    }
+    // Read transactions from a file
+    private static ArrayList<Transaction> readTransactions(){
+        ArrayList<Transaction> transactionsList = new ArrayList<>();
+
         try {
             FileReader fileReader = new FileReader("transactions.csv");
             BufferedReader bufferedReader = new BufferedReader(fileReader);
-            ArrayList<Transaction> transactionsList = new ArrayList<>();
 
             bufferedReader.readLine();
             String line = bufferedReader.readLine();
@@ -41,20 +51,23 @@ public class App {
 
             bufferedReader.close();
 
-            for (Transaction transaction : transactionsList){
-                System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f %n",
-                        transaction.getDate(),
-                        transaction.getTime(),
-                        transaction.getDescription(),
-                        transaction.getVendor(),
-                        transaction.getAmount());
-            }
-
         } catch (IOException e) {
             System.out.println("The file could not be read. Please make sure the file is available and not locked and then try again.");
             e.printStackTrace();
         }
 
+        return transactionsList;
+    }
+    // Display transactions the list
+    private static void printTransactionList(ArrayList<Transaction> transactionsList){
+        for (Transaction transaction : transactionsList){
+            System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f %n",
+                    transaction.getDate(),
+                    transaction.getTime(),
+                    transaction.getDescription(),
+                    transaction.getVendor(),
+                    transaction.getAmount());
+        }
     }
 
     private static Transaction generateTransactionAndFill(String[]fields){
