@@ -2,8 +2,10 @@ package com.pluralsight;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -20,6 +22,16 @@ public class App {
         System.out.println("Your Financial Overview Starts Here.");
         System.out.println("====================================");
         System.out.println();
+
+//        runHomeScreen();
+        System.out.println(addDeposit(scan));
+
+
+        //Add Deposit
+//        FileWriter fileWriter = new FileWriter("transactions.csv");
+
+
+
 
         //Add from newest to older display!!!!!!
         //Ledger - Read and Display
@@ -45,6 +57,60 @@ public class App {
 
 
     }
+    public static String addDeposit(Scanner scan) {
+        LocalDateTime today = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
+        String formattedDate = today.format(formatter);
+
+        System.out.println("Enter a brief description (e.g., Salary): ");
+        String depositDescription = scan.nextLine();
+        System.out.println("Who is the sender/source/vendor? (e.g., Employer):");
+        String depositVendor = scan.nextLine();
+        System.out.println("Enter deposit amount ($):");
+        double depositAmount = scan.nextDouble();
+
+        return formattedDate + " | " + depositVendor + " | " + depositVendor + " | " + depositAmount;
+    }
+
+    private static void runHomeScreen() {
+        boolean isRunning = true;
+        while (isRunning) {
+            System.out.print("""
+                \n[LEVEL 1: PARENT SCREEN]
+                1) Open Child Screen A (Has Grandchild)
+                2) Open Child Screen B (No Grandchild)
+                X) Exit Application
+                Enter command: \s""");
+
+            String choice = scan.nextLine().toLowerCase().trim();
+            switch (choice) {
+                case "1" -> runLadgerScreen();
+//                case "2" -> runChildBScreen();
+                case "x" -> isRunning = false;
+                default -> System.out.println("Invalid input.");
+            }
+        }
+    }
+    private static void runLadgerScreen() {
+        boolean inChildA = true;
+        while (inChildA) {
+            System.out.print("""
+                \n  [LEVEL 2: CHILD SCREEN A]
+                  1) Open Grandchild Screen
+                  A) Display All Transactions
+                  R) Return to Parent
+                  Enter command: \s""");
+
+            String choice = scan.nextLine().toLowerCase().trim();
+            switch (choice) {
+//                case "1" -> runGrandchildScreen();
+                case "a" -> System.out.println("  [Action] Logic executed in Child A.");
+                case "r" -> inChildA = false;
+                default -> System.out.println("  Invalid input.");
+            }
+        }
+    }
+
     //Create payments list
     private static ArrayList<Transaction> findPayments(ArrayList<Transaction> transactionsList){
         ArrayList<Transaction> paymentsList = new ArrayList<>();
