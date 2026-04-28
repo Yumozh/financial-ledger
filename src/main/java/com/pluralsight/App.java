@@ -24,10 +24,24 @@ public class App {
         //Add from newest to older display!!!!!!
         //Ledger - Read and Display
         ArrayList<Transaction> transactionsList = readTransactions();
-        printTransactionList(transactionsList);
+        printTransactionsList(transactionsList);
+
+        //Ledger - Deposits only
+        ArrayList<Transaction> depositList = findDeposits(transactionsList);
 
 
 
+    }
+    // Create a list of deposits
+    private static ArrayList<Transaction> findDeposits(ArrayList<Transaction> transactionsList){
+        ArrayList<Transaction> depositList = new ArrayList<>();
+
+        for(Transaction transaction : transactionsList){
+            if (transaction.getAmount() > 0){
+                depositList.add(transaction);
+            }
+        }
+        return depositList;
     }
     // Read transactions from a file
     private static ArrayList<Transaction> readTransactions(){
@@ -59,7 +73,7 @@ public class App {
         return transactionsList;
     }
     // Display transactions the list
-    private static void printTransactionList(ArrayList<Transaction> transactionsList){
+    private static void printTransactionsList(ArrayList<Transaction> transactionsList){
         for (Transaction transaction : transactionsList){
             System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f %n",
                     transaction.getDate(),
