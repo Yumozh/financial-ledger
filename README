@@ -1,1 +1,55 @@
 
+[LEVEL 1: HOME SCREEN]
+    |
+    |── (Command: ADD DEPOSIT)
+    |               |
+    |               |(User Input: Enter date (YYYY-MM-DD))
+    |               |
+    |               |(User Input: Enter time (HH:mm:ss))
+    |               |
+    |               |(User Input: What is this deposit for? (e.g., Payroll))
+    |               |
+    |               |(User Input: Who is the sender? (e.g., Employer Name))
+    |               |
+    |               |(User Input: Enter deposit amount ($))
+    |               ---------------------------------------
+    |
+    |── (Command: MAKE PAYMENT)
+    |               |
+    |               |(User Input: Enter date (YYYY-MM-DD))
+    |               |
+    |               |(User Input: Enter time (HH:mm:ss))
+    |               |
+    |               |(User Input: What is this payment for? (e.g., Payroll))
+    |               |
+    |               |(User Input: Who did you pay? (e.g., Employer Name))
+    |               |
+    |               |(User Input: Enter payment amount ($))
+    |               ---------------------------------------
+    |
+    |── (Command: DISPLAY TRANSACTIONS)
+    |              |──(Command: DISPLAY ALL ENTRIES)
+    |              |
+    |              |──(Command: DISPLAY ALL DEPOSITS)
+    |              |
+    |              |──(Command: DISPLAY ALL PAYMENTS)
+    |              |
+    |              |──(Command: DISPLAY CUSTOMIZED REPORTS)
+    |              |             |
+    |              |             |──(Command: DISPLAY MONTH TO DATE)
+    |              |             |
+    |              |             |──(Command: DISPLAY PREVIOUS MONTH)
+    |              |             |
+    |              |             |──(Command: DISPLAY YEAR TO DATE)
+    |              |             |
+    |              |             |──(Command: DISPLAY PREVIOUS YEAR)
+    |              |             |
+    |              |             |──(Command: DISPLAY BY VENDOR)
+    |              |             |
+    |              |             |──(Command: BACK) -> DISPLAY TRANSACTIONS
+    |              |
+    |              |──(Command: BACK) -> HOME SCREEN
+    |
+    |
+    |
+    |── (Command: EXIT APP)
