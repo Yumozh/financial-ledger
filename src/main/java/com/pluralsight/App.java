@@ -27,10 +27,34 @@ public class App {
         printTransactionsList(transactionsList);
 
         //Ledger - Deposits only
+        System.out.println();
+        System.out.println("====================");
+        System.out.println("DEPOSITS LIST");
+        System.out.println("====================");
         ArrayList<Transaction> depositList = findDeposits(transactionsList);
+        printTransactionsList(depositList);
+
+        //Ledger - Payments only
+        System.out.println();
+        System.out.println("====================");
+        System.out.println("PAYMENTS LIST");
+        System.out.println("====================");
+        ArrayList<Transaction> paymentsList = findPayments(transactionsList);
+        printTransactionsList(paymentsList);
 
 
 
+    }
+    //Create payments list
+    private static ArrayList<Transaction> findPayments(ArrayList<Transaction> transactionsList){
+        ArrayList<Transaction> paymentsList = new ArrayList<>();
+
+        for(Transaction transaction : transactionsList){
+            if (transaction.getAmount() < 0){
+                paymentsList.add(transaction);
+            }
+        }
+        return paymentsList;
     }
     // Create a list of deposits
     private static ArrayList<Transaction> findDeposits(ArrayList<Transaction> transactionsList){
