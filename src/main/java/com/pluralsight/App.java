@@ -14,16 +14,10 @@ public class App {
     static ArrayList<Transaction> transactionsList = readTransactions();
 
     public static void main(String[] args) {
-        //User welcome
-        System.out.println("====================================");
-        System.out.println("Hello! Ready to track your spending?");
-        System.out.println("Your Financial Overview Starts Here.");
-        System.out.println("====================================");
-        System.out.println();
 
-//        runHomeScreen();
+        runHomeScreen();
 
-        //Add from newest to older display!!!!!!
+        //Fix from newest to older display!!!!!!
         //Ledger - Read and Display
         printTransactionsList(transactionsList);
 
@@ -31,7 +25,8 @@ public class App {
         addNewDeposit ();
 
         //Add Payment to file transaction and store in the list
-
+        //Fix always negative number!!!!
+        addNewPayment();
 
         //Ledger - Deposits only
         System.out.println();
@@ -52,12 +47,29 @@ public class App {
 
 
     }
+    //Add Payment to file transaction and store in the list
+    private static void addNewPayment() {
+        try {
+            FileWriter fileWriter = new FileWriter("transactions.csv", true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            String newPayment = initiateNewPayment();
+
+            bufferedWriter.write(newPayment);
+            bufferedWriter.close();
+            String[] fields = newPayment.split(Pattern.quote("|"));
+            transactionsList.add(generateTransactionAndFill(fields));
+
+        } catch (IOException e) {
+            System.out.println("ERROR: An unexpected error occurred");
+            throw new RuntimeException(e);
+        }
+    }
     //Add Deposit to file transaction and store in the list
     private static void addNewDeposit (){
         try {
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-            String newDeposit = addDeposit();
+            String newDeposit = initiateNewDeposit();
 
             bufferedWriter.write(newDeposit);
             bufferedWriter.close();
@@ -69,8 +81,23 @@ public class App {
             throw new RuntimeException(e);
         }
     }
+    //Initiate new payment based on user input
+    private static String initiateNewPayment() {
+        LocalDateTime today = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
+        String formattedDate = today.format(formatter);
+
+        System.out.println("Enter a brief description of the payment (e.g., Rent, Groceries): ");
+        String paymentDescription = scan.nextLine();
+        System.out.println("Who is the receiver/vendor? (e.g., Amazon, Landlord): ");
+        String paymentVendor = scan.nextLine();
+        System.out.println("Enter the payment amount ($): ");
+        double paymentAmount = scan.nextDouble();
+
+        return formattedDate + "|" + paymentDescription + "|" + paymentVendor + "|" + paymentAmount;
+    }
     //Initiate new deposit based on user input
-    public static String addDeposit() {
+    public static String initiateNewDeposit() {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         String formattedDate = today.format(formatter);
@@ -88,23 +115,32 @@ public class App {
     private static void runHomeScreen() {
         boolean isRunning = true;
         while (isRunning) {
+            //User welcome
+            System.out.println("====================================");
+            System.out.println("Hello! Ready to track your spending?");
+            System.out.println("Your Financial Overview Starts Here.");
+            System.out.println("====================================");
+            System.out.println();
+
             System.out.print("""
-                \n[LEVEL 1: PARENT SCREEN]
-                1) Open Child Screen A (Has Grandchild)
-                2) Open Child Screen B (No Grandchild)
+                \nHOME SCREEN
+                1) Open Ledger A (Has Grandchild)
+                2) Make Payment B (No Grandchild)
+                3) Add Deposit
                 X) Exit Application
                 Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
             switch (choice) {
-                case "1" -> runLadgerScreen();
-//                case "2" -> runChildBScreen();
+                case "1" -> runLedgerScreen();
+                case "2" -> addNewPayment();
+                case "3" -> addNewDeposit ();
                 case "x" -> isRunning = false;
                 default -> System.out.println("Invalid input.");
             }
         }
     }
-    private static void runLadgerScreen() {
+    private static void runLedgerScreen() {
         boolean inChildA = true;
         while (inChildA) {
             System.out.print("""
