@@ -1,6 +1,7 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.sql.SQLOutput;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,12 +15,18 @@ public class App {
     static ArrayList<Transaction> transactionsList = readTransactions();
 
     public static void main(String[] args) {
+        //User welcome
+        System.out.println("====================================");
+        System.out.println("Hello! Ready to track your spending?");
+        System.out.println("Your Financial Overview Starts Here.");
+        System.out.println("====================================");
+        System.out.println();
 
-        runHomeScreen();
+//        runHomeScreen();
 
-//        //Fix from newest to older display!!!!!!
-//        //Ledger - Read and Display
-//        printTransactionsList(transactionsList);
+        //Fix from newest to older display!!!!!!
+        //Ledger - Read and Display
+        printTransactionsList(transactionsList);
 //
 //        //Add Deposit to file transaction and store in the list
 //        addNewDeposit ();
@@ -27,7 +34,7 @@ public class App {
 //        //Add Payment to file transaction and store in the list
 //        //Fix always negative number!!!!
 //        addNewPayment();
-//
+
 //        //Ledger - Deposits only
 //        System.out.println();
 //        System.out.println("====================");
@@ -44,19 +51,55 @@ public class App {
 //        ArrayList<Transaction> paymentsList = findPayments(transactionsList);
 //        printTransactionsList(paymentsList);
 
+        System.out.println();
+        System.out.println("==========LEDGER REPORTS MONTH TO DATE ============");
+        // Ledger - Reports only
+                // Month To Date
+        //What is date?
+        LocalDate today = LocalDate.now();
+        //First day of month
+        LocalDate firstDayOfMonth = today.withDayOfMonth(1);
+        //Last day of month
+        LocalDate firstDayPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
+
+        for(Transaction transaction : transactionsList){
+            if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(firstDayOfMonth)){
+                System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f \n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+
+        System.out.println();
+        System.out.println("==========LEDGER REPORTS PREVIOUS MONTH ============");
+        //Previous month
+        for(Transaction transaction : transactionsList){
+            if (transaction.getDate().isBefore(firstDayOfMonth) && transaction.getDate().isAfter(firstDayPreviousMonth)){
+                System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f \n",
+                        transaction.getDate(),
+                        transaction.getTime(),
+                        transaction.getDescription(),
+                        transaction.getVendor(),
+                        transaction.getAmount());
+            }
+        }
+
+        System.out.println();
+        System.out.println("==========LEDGER REPORTS Year to Date ============");
+        //Year to Date
+
+
+
 
 
     }
     private static void runHomeScreen() {
         boolean isRunning = true;
         while (isRunning) {
-            //User welcome
-            System.out.println("====================================");
-            System.out.println("Hello! Ready to track your spending?");
-            System.out.println("Your Financial Overview Starts Here.");
-            System.out.println("====================================");
-            System.out.println();
-
             System.out.print("""
                 \nHOME SCREEN
                 1) Open Ledger A (Has Grandchild)
@@ -97,6 +140,35 @@ public class App {
                 default -> System.out.println("  Invalid input.");
             }
         }
+    }
+    // Read transactions from a file
+    private static ArrayList<Transaction> readTransactions(){
+        ArrayList<Transaction> transactionsList = new ArrayList<>();
+
+        try {
+            FileReader fileReader = new FileReader("transactions.csv");
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+            bufferedReader.readLine();
+            String line = bufferedReader.readLine();
+
+            while (line != null) {
+
+                String[] fields = line.split(Pattern.quote("|"));
+                Transaction currentTransaction = generateTransactionAndFill(fields);
+                transactionsList.add( currentTransaction);
+
+                line = bufferedReader.readLine();
+            }
+
+            bufferedReader.close();
+
+        } catch (IOException e) {
+            System.out.println("The file could not be read. Please make sure the file is available and not locked and then try again.");
+            e.printStackTrace();
+        }
+
+        return transactionsList;
     }
     //Add Payment to file transaction and store in the list
     private static void addNewPayment() {
@@ -148,6 +220,7 @@ public class App {
 
         return formattedDate + "|" + paymentDescription + "|" + paymentVendor + "|" + paymentAmount;
     }
+
     //Initiate new deposit based on user input
     public static String initiateNewDeposit() {
         LocalDateTime today = LocalDateTime.now();
@@ -176,6 +249,7 @@ public class App {
         }
         return paymentsList;
     }
+
     // Create a list of deposits
     private static ArrayList<Transaction> findDeposits(ArrayList<Transaction> transactionsList){
         ArrayList<Transaction> depositList = new ArrayList<>();
@@ -187,39 +261,11 @@ public class App {
         }
         return depositList;
     }
-    // Read transactions from a file
-    private static ArrayList<Transaction> readTransactions(){
-        ArrayList<Transaction> transactionsList = new ArrayList<>();
 
-        try {
-            FileReader fileReader = new FileReader("transactions.csv");
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-
-            bufferedReader.readLine();
-            String line = bufferedReader.readLine();
-
-            while (line != null) {
-
-                String[] fields = line.split(Pattern.quote("|"));
-                Transaction currentTransaction = generateTransactionAndFill(fields);
-                transactionsList.add( currentTransaction);
-
-                line = bufferedReader.readLine();
-            }
-
-            bufferedReader.close();
-
-        } catch (IOException e) {
-            System.out.println("The file could not be read. Please make sure the file is available and not locked and then try again.");
-            e.printStackTrace();
-        }
-
-        return transactionsList;
-    }
     // Display transactions the list
     private static void printTransactionsList(ArrayList<Transaction> transactionsList){
         for (Transaction transaction : transactionsList){
-            System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f %n",
+            System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f \n",
                     transaction.getDate(),
                     transaction.getTime(),
                     transaction.getDescription(),
