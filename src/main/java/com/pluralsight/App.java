@@ -1,9 +1,6 @@
 package com.pluralsight;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -14,6 +11,7 @@ import java.util.regex.Pattern;
 
 public class App {
     static Scanner scan = new Scanner(System.in);
+    static ArrayList<Transaction> transactionsList = readTransactions();
 
     public static void main(String[] args) {
         //User welcome
@@ -24,19 +22,16 @@ public class App {
         System.out.println();
 
 //        runHomeScreen();
-        System.out.println(addDeposit(scan));
-
-
-        //Add Deposit
-//        FileWriter fileWriter = new FileWriter("transactions.csv");
-
-
-
 
         //Add from newest to older display!!!!!!
         //Ledger - Read and Display
-        ArrayList<Transaction> transactionsList = readTransactions();
         printTransactionsList(transactionsList);
+
+        //Add Deposit to file transaction and store in the list
+        addNewDeposit ();
+
+        //Add Payment to file transaction and store in the list
+
 
         //Ledger - Deposits only
         System.out.println();
@@ -57,7 +52,25 @@ public class App {
 
 
     }
-    public static String addDeposit(Scanner scan) {
+    //Add Deposit to file transaction and store in the list
+    private static void addNewDeposit (){
+        try {
+            FileWriter fileWriter = new FileWriter("transactions.csv", true);
+            BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+            String newDeposit = addDeposit();
+
+            bufferedWriter.write(newDeposit);
+            bufferedWriter.close();
+            String[] fields = newDeposit.split(Pattern.quote("|"));
+            transactionsList.add(generateTransactionAndFill(fields));
+
+        } catch (IOException e) {
+            System.out.println("ERROR: An unexpected error occurred");
+            throw new RuntimeException(e);
+        }
+    }
+    //Initiate new deposit based on user input
+    public static String addDeposit() {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         String formattedDate = today.format(formatter);
@@ -69,7 +82,7 @@ public class App {
         System.out.println("Enter deposit amount ($):");
         double depositAmount = scan.nextDouble();
 
-        return formattedDate + " | " + depositVendor + " | " + depositVendor + " | " + depositAmount;
+        return formattedDate + "|" + depositDescription + "|" + depositVendor + "|" + depositAmount;
     }
 
     private static void runHomeScreen() {
@@ -111,7 +124,7 @@ public class App {
         }
     }
 
-    //Create payments list
+    //Generate a list with all payments
     private static ArrayList<Transaction> findPayments(ArrayList<Transaction> transactionsList){
         ArrayList<Transaction> paymentsList = new ArrayList<>();
 
