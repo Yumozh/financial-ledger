@@ -62,7 +62,7 @@ public class Transaction {
     }
 
     public void formatAndPrintTransaction(Transaction transaction){
-        System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f \n",
+        System.out.printf("%-12s | %-10s | %-25s | %-20s | $ %.2f \n",
                 transaction.getDate(),
                 transaction.getTime(),
                 transaction.getDescription(),

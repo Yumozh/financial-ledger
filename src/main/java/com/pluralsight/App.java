@@ -17,9 +17,8 @@ public class App {
 
     public static void main(String[] args) {
         displayUserGreeting();
-
         runHomeScreen();
-//        displayByMonthToDate();
+
         //Fix from newest to older display!!!!!!
 
     }
@@ -68,8 +67,8 @@ public class App {
             switch (choice) {
                 case "1" -> runReports();
                 case "a" -> printTransactionsList(transactionsList);
-                case "b" -> printTransactionsList(findDeposits(transactionsList));
-                case "c" -> printTransactionsList(findPayments(transactionsList));
+                case "b" -> printTransactionsList(displayAllDeposits(transactionsList));
+                case "c" -> printTransactionsList(displayAllPayments(transactionsList));
                 case "r" -> inLedgerScreen = false;
                 default -> System.out.println("  Invalid input.");
             }
@@ -86,7 +85,7 @@ public class App {
                     C) Year To Date Report
                     D) Previous Year Report
                     E) Search By Vendor Report
-                    1) Back to Child Screen A
+                    1) Back to Ledger
                     Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
@@ -101,6 +100,7 @@ public class App {
             }
         }
     }
+
     private static ArrayList<Transaction> readTransactions(){
         ArrayList<Transaction> transactionsList = new ArrayList<>();
 
@@ -139,7 +139,7 @@ public class App {
             }
         }
     }
-
+  //NEED FIX !!!!!!!!!!!!!!!
     private static void displayPreviousYear() {
         LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         int lastYear = LocalDate.now().getYear() - 1;
@@ -152,7 +152,6 @@ public class App {
             }
         }
     }
-
     private static void displayYearToDate() {
         LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         displayHeader("LEDGER REPORT YEAR TO DATE");
@@ -162,7 +161,6 @@ public class App {
             }
         }
     }
-
     private static void displayPreviousMonth() {
         displayHeader("LEDGER REPORT PREVIOUS MONTH");
         LocalDate firstDayPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
@@ -172,7 +170,6 @@ public class App {
             }
         }
     }
-
     private static void displayByMonthToDate() {
         displayHeader("LEDGER REPORT MONTH TO DATE");
         for(Transaction transaction : transactionsList){
@@ -187,7 +184,7 @@ public class App {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         String formattedDate = today.format(formatter);
-
+        System.out.println();
         System.out.println("Enter a brief description of the payment (e.g., Rent, Groceries): ");
         String paymentDescription = scan.nextLine();
         System.out.println("Who is the receiver/vendor? (e.g., Amazon, Landlord): ");
@@ -202,7 +199,7 @@ public class App {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         String formattedDate = today.format(formatter);
-
+        System.out.println();
         System.out.println("Enter a brief description (e.g., Salary): ");
         String depositDescription = scan.nextLine();
         System.out.println("Who is the sender/source/vendor? (e.g., Employer):");
@@ -213,7 +210,7 @@ public class App {
 
         return formattedDate + "|" + depositDescription + "|" + depositVendor + "|" + depositAmount + "\n";
     }
-
+//  ADD NOTIFICATION TO USER WHEN DONE
     private static void addNewPayment() {
         try {
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
@@ -247,9 +244,8 @@ public class App {
         }
     }
 
-
     //Generate a list with all payments
-    private static ArrayList<Transaction> findPayments(ArrayList<Transaction> transactionsList){
+    private static ArrayList<Transaction> displayAllPayments(ArrayList<Transaction> transactionsList){
         displayHeader("ALL PAYMENTS");
         ArrayList<Transaction> paymentsList = new ArrayList<>();
 
@@ -260,8 +256,7 @@ public class App {
         }
         return paymentsList;
     }
-
-    private static ArrayList<Transaction> findDeposits(ArrayList<Transaction> transactionsList){
+    private static ArrayList<Transaction> displayAllDeposits(ArrayList<Transaction> transactionsList){
         displayHeader("ALL DEPOSITS");
         ArrayList<Transaction> depositList = new ArrayList<>();
 
@@ -279,7 +274,6 @@ public class App {
             transaction.formatAndPrintTransaction(transaction);
         }
     }
-
     private static Transaction generateTransactionAndFill(String[]fields){
         Transaction currentTransaction = new Transaction();
 
