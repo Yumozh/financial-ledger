@@ -17,35 +17,86 @@ public class App {
 
         runHomeScreen();
 
-        //Fix from newest to older display!!!!!!
-        //Ledger - Read and Display
-        printTransactionsList(transactionsList);
+//        //Fix from newest to older display!!!!!!
+//        //Ledger - Read and Display
+//        printTransactionsList(transactionsList);
+//
+//        //Add Deposit to file transaction and store in the list
+//        addNewDeposit ();
+//
+//        //Add Payment to file transaction and store in the list
+//        //Fix always negative number!!!!
+//        addNewPayment();
+//
+//        //Ledger - Deposits only
+//        System.out.println();
+//        System.out.println("====================");
+//        System.out.println("DEPOSITS LIST");
+//        System.out.println("====================");
+//        ArrayList<Transaction> depositList = findDeposits(transactionsList);
+//        printTransactionsList(depositList);
+//
+//        //Ledger - Payments only
+//        System.out.println();
+//        System.out.println("====================");
+//        System.out.println("PAYMENTS LIST");
+//        System.out.println("====================");
+//        ArrayList<Transaction> paymentsList = findPayments(transactionsList);
+//        printTransactionsList(paymentsList);
 
-        //Add Deposit to file transaction and store in the list
-        addNewDeposit ();
-
-        //Add Payment to file transaction and store in the list
-        //Fix always negative number!!!!
-        addNewPayment();
-
-        //Ledger - Deposits only
-        System.out.println();
-        System.out.println("====================");
-        System.out.println("DEPOSITS LIST");
-        System.out.println("====================");
-        ArrayList<Transaction> depositList = findDeposits(transactionsList);
-        printTransactionsList(depositList);
-
-        //Ledger - Payments only
-        System.out.println();
-        System.out.println("====================");
-        System.out.println("PAYMENTS LIST");
-        System.out.println("====================");
-        ArrayList<Transaction> paymentsList = findPayments(transactionsList);
-        printTransactionsList(paymentsList);
 
 
+    }
+    private static void runHomeScreen() {
+        boolean isRunning = true;
+        while (isRunning) {
+            //User welcome
+            System.out.println("====================================");
+            System.out.println("Hello! Ready to track your spending?");
+            System.out.println("Your Financial Overview Starts Here.");
+            System.out.println("====================================");
+            System.out.println();
 
+            System.out.print("""
+                \nHOME SCREEN
+                1) Open Ledger A (Has Grandchild)
+                2) Make Payment B (No Grandchild)
+                3) Add Deposit
+                X) Exit Application
+                Enter command: \s""");
+
+            String choice = scan.nextLine().toLowerCase().trim();
+            switch (choice) {
+                case "1" -> runLedgerScreen();
+                case "2" -> addNewPayment();
+                case "3" -> addNewDeposit ();
+                case "x" -> isRunning = false;
+                default -> System.out.println("Invalid input.");
+            }
+        }
+    }
+    private static void runLedgerScreen() {
+        boolean inChildA = true;
+        while (inChildA) {
+            System.out.print("""
+                \n     LEDGER SCREEN
+                  1) Open all Reports
+                  A) Display all Transactions
+                  B) Display all Deposits
+                  C) Display all Payments
+                  R) Return to Home Screen
+                  Enter command: \s""");
+
+            String choice = scan.nextLine().toLowerCase().trim();
+            switch (choice) {
+//                case "1" -> runGrandchildScreen();
+                case "a" -> printTransactionsList(transactionsList);
+                case "b" -> printTransactionsList(findDeposits(transactionsList));
+                case "c" -> printTransactionsList(findPayments(transactionsList));
+                case "r" -> inChildA = false;
+                default -> System.out.println("  Invalid input.");
+            }
+        }
     }
     //Add Payment to file transaction and store in the list
     private static void addNewPayment() {
@@ -93,6 +144,7 @@ public class App {
         String paymentVendor = scan.nextLine();
         System.out.println("Enter the payment amount ($): ");
         double paymentAmount = scan.nextDouble();
+        scan.nextLine();
 
         return formattedDate + "|" + paymentDescription + "|" + paymentVendor + "|" + paymentAmount;
     }
@@ -108,56 +160,9 @@ public class App {
         String depositVendor = scan.nextLine();
         System.out.println("Enter deposit amount ($):");
         double depositAmount = scan.nextDouble();
+        scan.nextLine();
 
         return formattedDate + "|" + depositDescription + "|" + depositVendor + "|" + depositAmount;
-    }
-
-    private static void runHomeScreen() {
-        boolean isRunning = true;
-        while (isRunning) {
-            //User welcome
-            System.out.println("====================================");
-            System.out.println("Hello! Ready to track your spending?");
-            System.out.println("Your Financial Overview Starts Here.");
-            System.out.println("====================================");
-            System.out.println();
-
-            System.out.print("""
-                \nHOME SCREEN
-                1) Open Ledger A (Has Grandchild)
-                2) Make Payment B (No Grandchild)
-                3) Add Deposit
-                X) Exit Application
-                Enter command: \s""");
-
-            String choice = scan.nextLine().toLowerCase().trim();
-            switch (choice) {
-                case "1" -> runLedgerScreen();
-                case "2" -> addNewPayment();
-                case "3" -> addNewDeposit ();
-                case "x" -> isRunning = false;
-                default -> System.out.println("Invalid input.");
-            }
-        }
-    }
-    private static void runLedgerScreen() {
-        boolean inChildA = true;
-        while (inChildA) {
-            System.out.print("""
-                \n  [LEVEL 2: CHILD SCREEN A]
-                  1) Open Grandchild Screen
-                  A) Display All Transactions
-                  R) Return to Parent
-                  Enter command: \s""");
-
-            String choice = scan.nextLine().toLowerCase().trim();
-            switch (choice) {
-//                case "1" -> runGrandchildScreen();
-                case "a" -> System.out.println("  [Action] Logic executed in Child A.");
-                case "r" -> inChildA = false;
-                default -> System.out.println("  Invalid input.");
-            }
-        }
     }
 
     //Generate a list with all payments
