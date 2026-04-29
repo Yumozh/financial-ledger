@@ -60,4 +60,13 @@ public class Transaction {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    public void formatAndPrintTransaction(Transaction transaction){
+        System.out.printf("%-12s | %-10s | %-25s | %-20s | $%.2f \n",
+                transaction.getDate(),
+                transaction.getTime(),
+                transaction.getDescription(),
+                transaction.getVendor(),
+                transaction.getAmount());
+    }
 }
