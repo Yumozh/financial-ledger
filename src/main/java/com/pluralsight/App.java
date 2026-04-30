@@ -254,7 +254,7 @@ public class App {
 
     private static String initiateNewPayment() {
         LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss");
         String formattedDate = today.format(formatter);
         System.out.println();
         System.out.println("Enter a brief description of the payment (e.g., Rent, Groceries): ");
