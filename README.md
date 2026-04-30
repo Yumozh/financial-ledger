@@ -46,7 +46,8 @@ Flexible filtering system supporting multiple criteria:
 
 **Code examples if filtering report by Vendor name:**
 
-```private static void displayByVendorName() {
+```java
+private static void displayByVendorName() {
            System.out.println("Enter the name of the vendor you would like to search for:");
            String vendorSearchName = scan.nextLine();
            for(Transaction transaction : transactionsList){
@@ -55,7 +56,10 @@ Flexible filtering system supporting multiple criteria:
                }
            }
        }
-###Interacton Diagram
+```
+### Interaction Diagram
+
+```txt
 [LEVEL 1: HOME SCREEN]
         |
         |── ADD DEPOSIT
@@ -86,4 +90,4 @@ Flexible filtering system supporting multiple criteria:
         |       └── Back to Home
         |
         |── EXIT APPLICATION
-
+```
