@@ -270,7 +270,7 @@ public class App {
 
     public static String initiateNewDeposit() {
         LocalDateTime today = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd|HH:mm:ss");
         String formattedDate = today.format(formatter);
         System.out.println();
         System.out.println("Enter a brief description (e.g., Salary): ");
