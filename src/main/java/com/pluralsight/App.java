@@ -12,16 +12,15 @@ import java.util.regex.Pattern;
 public class App {
     static Scanner scan = new Scanner(System.in);
     static ArrayList<Transaction> transactionsList = readTransactions();
-    static  LocalDate today = LocalDate.now();
+    static LocalDate today = LocalDate.now();
     static LocalDate firstDayOfMonth = today.withDayOfMonth(1);
 
     public static void main(String[] args) {
         displayUserGreeting();
         runHomeScreen();
-
         //Fix from newest to older display!!!!!!
-
     }
+
     private static void displayUserGreeting() {
         System.out.println("====================================");
         System.out.println("Hello! Ready to track your spending?");
@@ -32,6 +31,7 @@ public class App {
 
     private static void runHomeScreen() {
         boolean isRunning = true;
+
         while (isRunning) {
             System.out.print("""
                 \nHOME SCREEN
@@ -42,10 +42,11 @@ public class App {
                 Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
+
             switch (choice) {
                 case "1" -> runLedgerScreen();
                 case "2" -> addNewPayment();
-                case "3" -> addNewDeposit ();
+                case "3" -> addNewDeposit();
                 case "x" -> isRunning = false;
                 default -> System.out.println("Invalid input.");
             }
@@ -53,6 +54,7 @@ public class App {
     }
     private static void runLedgerScreen() {
         boolean inLedgerScreen = true;
+
         while (inLedgerScreen) {
             System.out.print("""
                 \n     LEDGER SCREEN
@@ -64,18 +66,20 @@ public class App {
                   Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
+
             switch (choice) {
                 case "1" -> runReports();
                 case "a" -> printTransactionsList(transactionsList);
                 case "b" -> printTransactionsList(displayAllDeposits(transactionsList));
                 case "c" -> printTransactionsList(displayAllPayments(transactionsList));
                 case "r" -> inLedgerScreen = false;
-                default -> System.out.println("  Invalid input.");
+                default -> System.out.println("Invalid input.");
             }
         }
     }
     private static void runReports() {
         boolean inReports = true;
+
         while (inReports) {
             System.out.println("\n    ALL REPORTS");
             System.out.print("""
@@ -89,6 +93,7 @@ public class App {
                     Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
+
             switch (choice) {
                 case "a" -> displayByMonthToDate();
                 case "b" -> displayPreviousMonth();
@@ -96,7 +101,7 @@ public class App {
                 case "d" -> displayPreviousYear();
                 case "e" -> displayByVendorName();
                 case "1" -> inReports = false;
-                default -> System.out.println("    Invalid input.");
+                default -> System.out.println("Invalid input.");
             }
         }
     }
@@ -135,20 +140,20 @@ public class App {
         String vendorSearchName = scan.nextLine();
         for(Transaction transaction : transactionsList){
             if (transaction.getVendor().equalsIgnoreCase(vendorSearchName) ){
-                transaction.formatAndPrintTransaction(transaction);
+                transaction.formatAndPrintTransaction();
             }
         }
     }
   //NEED FIX !!!!!!!!!!!!!!!
     private static void displayPreviousYear() {
-        LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
+        LocalDate startOfCurrentYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         int lastYear = LocalDate.now().getYear() - 1;
-        LocalDate endOfPrevYear = LocalDate.of(lastYear, 12, 31);
+        LocalDate startOfPreviousYear = LocalDate.of(lastYear, 1, 1);
         displayHeader("LEDGER REPORTS PREVIOUS YEAR");
 
         for(Transaction transaction : transactionsList){
-            if (transaction.getDate().isBefore(startOfYear) && transaction.getDate().isBefore(endOfPrevYear)){
-                transaction.formatAndPrintTransaction(transaction);
+            if (transaction.getDate().isBefore(startOfCurrentYear) && transaction.getDate().isAfter(startOfPreviousYear)){
+                transaction.formatAndPrintTransaction();
             }
         }
     }
@@ -157,7 +162,7 @@ public class App {
         displayHeader("LEDGER REPORT YEAR TO DATE");
         for(Transaction transaction : transactionsList){
             if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(startOfYear)){
-                transaction.formatAndPrintTransaction(transaction);
+                transaction.formatAndPrintTransaction();
             }
         }
     }
@@ -166,7 +171,7 @@ public class App {
         LocalDate firstDayPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
         for(Transaction transaction : transactionsList){
             if (transaction.getDate().isBefore(firstDayOfMonth) && transaction.getDate().isAfter(firstDayPreviousMonth)){
-                transaction.formatAndPrintTransaction(transaction);
+                transaction.formatAndPrintTransaction();
             }
         }
     }
@@ -174,7 +179,7 @@ public class App {
         displayHeader("LEDGER REPORT MONTH TO DATE");
         for(Transaction transaction : transactionsList){
             if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(firstDayOfMonth)){
-                transaction.formatAndPrintTransaction(transaction);
+                transaction.formatAndPrintTransaction();
             }
         }
     }
@@ -210,7 +215,7 @@ public class App {
 
         return formattedDate + "|" + depositDescription + "|" + depositVendor + "|" + depositAmount + "\n";
     }
-//  ADD NOTIFICATION TO USER WHEN DONE
+
     private static void addNewPayment() {
         try {
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
@@ -221,7 +226,7 @@ public class App {
             bufferedWriter.close();
             String[] fields = newPayment.split(Pattern.quote("|"));
             transactionsList.add(generateTransactionAndFill(fields));
-
+            //  ADD NOTIFICATION TO USER WHEN DONE!!!!!!
         } catch (IOException e) {
             System.out.println("ERROR: An unexpected error occurred");
             throw new RuntimeException(e);
@@ -271,7 +276,7 @@ public class App {
     // Display transactions the list
     private static void printTransactionsList(ArrayList<Transaction> transactionsList){
         for (Transaction transaction : transactionsList){
-            transaction.formatAndPrintTransaction(transaction);
+            transaction.formatAndPrintTransaction();
         }
     }
     private static Transaction generateTransactionAndFill(String[]fields){
