@@ -275,7 +275,11 @@ public class App {
 
     // Display transactions the list
     private static void printTransactionsList(ArrayList<Transaction> transactionsList){
-        for (Transaction transaction : transactionsList){
+        System.out.println();
+        System.out.printf("%-12s | %-10s | %-25s | %-20s | %-10s %n",
+                "Date", "Time", "Description", "Vendor", "Amount");
+        for (int i = transactionsList.size() - 1; i >= 0; i--){
+            Transaction transaction = transactionsList.get(i);
             transaction.formatAndPrintTransaction();
         }
     }
