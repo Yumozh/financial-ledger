@@ -226,7 +226,7 @@ public class App {
             bufferedWriter.close();
             String[] fields = newPayment.split(Pattern.quote("|"));
             transactionsList.add(generateTransactionAndFill(fields));
-            //  ADD NOTIFICATION TO USER WHEN DONE!!!!!!
+            displayHeader("✔ Payment added successfully!");
         } catch (IOException e) {
             System.out.println("ERROR: An unexpected error occurred");
             throw new RuntimeException(e);
@@ -242,7 +242,7 @@ public class App {
             bufferedWriter.close();
             String[] fields = newDeposit.split(Pattern.quote("|"));
             transactionsList.add(generateTransactionAndFill(fields));
-
+            displayHeader("✔ Deposit added successfully!");
         } catch (IOException e) {
             System.out.println("ERROR: An unexpected error occurred");
             throw new RuntimeException(e);
