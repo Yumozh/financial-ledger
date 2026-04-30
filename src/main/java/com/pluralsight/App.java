@@ -33,12 +33,12 @@ public class App {
 
         while (isRunning) {
             System.out.print("""
-                \nHOME SCREEN
-                1) Open Ledger
-                2) Make Payment
-                3) Add Deposit
-                X) Exit Application
-                Enter command: \s""");
+                    \nHOME SCREEN
+                    1) Open Ledger
+                    2) Make Payment
+                    3) Add Deposit
+                    X) Exit Application
+                    Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -51,18 +51,19 @@ public class App {
             }
         }
     }
+
     private static void runLedgerScreen() {
         boolean inLedgerScreen = true;
 
         while (inLedgerScreen) {
             System.out.print("""
-                \n     LEDGER SCREEN
-                  1) Open all Reports
-                  A) Display all Transactions
-                  B) Display all Deposits
-                  C) Display all Payments
-                  R) Return to Home Screen
-                  Enter command: \s""");
+                    \n     LEDGER SCREEN
+                      1) Open all Reports
+                      A) Display all Transactions
+                      B) Display all Deposits
+                      C) Display all Payments
+                      R) Return to Home Screen
+                      Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -76,21 +77,22 @@ public class App {
             }
         }
     }
+
     private static void runReports() {
         boolean inReports = true;
 
         while (inReports) {
             System.out.println("\n    ALL REPORTS");
             System.out.print("""
-                \n    Options:
-                    A) Month To Date Report
-                    B) Previous Month Report
-                    C) Year To Date Report
-                    D) Previous Year Report
-                    E) Search By Vendor Report
-                    F) Custom Search
-                    1) Back to Ledger
-                    Enter command: \s""");
+                    \n    Options:
+                        A) Month To Date Report
+                        B) Previous Month Report
+                        C) Year To Date Report
+                        D) Previous Year Report
+                        E) Search By Vendor Report
+                        F) Custom Search
+                        1) Back to Ledger
+                        Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -107,7 +109,7 @@ public class App {
         }
     }
 
-    private static void displayFilteredTransactionList(){
+    private static void displayFilteredTransactionList() {
         displayHeader("Fill in the fields you want to filter by. Press Enter to skip.");
 
         System.out.println("Start Date (YYYY-MM-DD):");
@@ -144,29 +146,30 @@ public class App {
                 }
             }
 
-            if(!descriptionInput.isEmpty()){
-                if(!t.getDescription().equalsIgnoreCase(descriptionInput)){
+            if (!descriptionInput.isEmpty()) {
+                if (!t.getDescription().equalsIgnoreCase(descriptionInput)) {
                     continue;
                 }
             }
 
-            if(!vendorInput.isEmpty()){
-                if(!t.getVendor().equalsIgnoreCase(vendorInput)){
+            if (!vendorInput.isEmpty()) {
+                if (!t.getVendor().equalsIgnoreCase(vendorInput)) {
                     continue;
                 }
             }
 
-            if(!amountInput.isEmpty()){
-                if(t.getAmount()!= Double.parseDouble(amountInput)){
+            if (!amountInput.isEmpty()) {
+                if (t.getAmount() != Double.parseDouble(amountInput)) {
                     continue;
                 }
             }
             filteredList.add(t);
         }
+
         printTransactionsList(filteredList);
     }
 
-    private static ArrayList<Transaction> readTransactions(){
+    private static ArrayList<Transaction> readTransactions() {
         ArrayList<Transaction> transactionsList = new ArrayList<>();
 
         try {
@@ -180,7 +183,7 @@ public class App {
 
                 String[] fields = line.split(Pattern.quote("|"));
                 Transaction currentTransaction = generateTransactionAndFill(fields);
-                transactionsList.add( currentTransaction);
+                transactionsList.add(currentTransaction);
 
                 line = bufferedReader.readLine();
             }
@@ -198,46 +201,50 @@ public class App {
     private static void displayByVendorName() {
         System.out.println("Enter the name of the vendor you would like to search for:");
         String vendorSearchName = scan.nextLine();
-        for(Transaction transaction : transactionsList){
-            if (transaction.getVendor().equalsIgnoreCase(vendorSearchName) ){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getVendor().equalsIgnoreCase(vendorSearchName)) {
                 transaction.formatAndPrintTransaction();
             }
         }
     }
+
     private static void displayPreviousYear() {
         LocalDate startOfCurrentYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         int lastYear = LocalDate.now().getYear() - 1;
         LocalDate startOfPreviousYear = LocalDate.of(lastYear, 1, 1);
         displayHeader("LEDGER REPORTS PREVIOUS YEAR");
 
-        for(Transaction transaction : transactionsList){
-            if (transaction.getDate().isBefore(startOfCurrentYear) && transaction.getDate().isAfter(startOfPreviousYear)){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getDate().isBefore(startOfCurrentYear) && transaction.getDate().isAfter(startOfPreviousYear)) {
                 transaction.formatAndPrintTransaction();
             }
         }
     }
+
     private static void displayYearToDate() {
         LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         displayHeader("LEDGER REPORT YEAR TO DATE");
-        for(Transaction transaction : transactionsList){
-            if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(startOfYear)){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(startOfYear)) {
                 transaction.formatAndPrintTransaction();
             }
         }
     }
+
     private static void displayPreviousMonth() {
         displayHeader("LEDGER REPORT PREVIOUS MONTH");
         LocalDate firstDayPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
-        for(Transaction transaction : transactionsList){
-            if (transaction.getDate().isBefore(firstDayOfMonth) && transaction.getDate().isAfter(firstDayPreviousMonth)){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getDate().isBefore(firstDayOfMonth) && transaction.getDate().isAfter(firstDayPreviousMonth)) {
                 transaction.formatAndPrintTransaction();
             }
         }
     }
+
     private static void displayByMonthToDate() {
         displayHeader("LEDGER REPORT MONTH TO DATE");
-        for(Transaction transaction : transactionsList){
-            if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(firstDayOfMonth)){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(firstDayOfMonth)) {
                 transaction.formatAndPrintTransaction();
             }
         }
@@ -258,6 +265,7 @@ public class App {
 
         return formattedDate + "|" + paymentDescription + "|" + paymentVendor + "|" + paymentAmount + "\n";
     }
+
     public static String initiateNewDeposit() {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
@@ -290,7 +298,8 @@ public class App {
             throw new RuntimeException(e);
         }
     }
-    private static void addNewDeposit (){
+
+    private static void addNewDeposit() {
         try {
             FileWriter fileWriter = new FileWriter("transactions.csv", true);
             BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
@@ -307,39 +316,41 @@ public class App {
         }
     }
 
-    private static ArrayList<Transaction> displayAllPayments(ArrayList<Transaction> transactionsList){
+    private static ArrayList<Transaction> displayAllPayments(ArrayList<Transaction> transactionsList) {
         displayHeader("ALL PAYMENTS");
         ArrayList<Transaction> paymentsList = new ArrayList<>();
 
-        for(Transaction transaction : transactionsList){
-            if (transaction.getAmount() < 0){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getAmount() < 0) {
                 paymentsList.add(transaction);
             }
         }
         return paymentsList;
     }
-    private static ArrayList<Transaction> displayAllDeposits(ArrayList<Transaction> transactionsList){
+
+    private static ArrayList<Transaction> displayAllDeposits(ArrayList<Transaction> transactionsList) {
         displayHeader("ALL DEPOSITS");
         ArrayList<Transaction> depositList = new ArrayList<>();
 
-        for(Transaction transaction : transactionsList){
-            if (transaction.getAmount() > 0){
+        for (Transaction transaction : transactionsList) {
+            if (transaction.getAmount() > 0) {
                 depositList.add(transaction);
             }
         }
         return depositList;
     }
 
-    private static void printTransactionsList(ArrayList<Transaction> transactionsList){
+    private static void printTransactionsList(ArrayList<Transaction> transactionsList) {
         System.out.println();
         System.out.printf("%-12s | %-10s | %-25s | %-20s | %-10s %n",
                 "Date", "Time", "Description", "Vendor", "Amount");
-        for (int i = transactionsList.size() - 1; i >= 0; i--){
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
             Transaction transaction = transactionsList.get(i);
             transaction.formatAndPrintTransaction();
         }
     }
-    private static Transaction generateTransactionAndFill(String[]fields){
+
+    private static Transaction generateTransactionAndFill(String[] fields) {
         Transaction currentTransaction = new Transaction();
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
@@ -354,7 +365,7 @@ public class App {
         return currentTransaction;
     }
 
-    private static void displayHeader(String title){
+    private static void displayHeader(String title) {
         System.out.println("\n==============================================================================");
         System.out.println("           " + title.toUpperCase());
         System.out.println("================================================================================");
