@@ -1,3 +1,32 @@
+##Capstone Project 1: Financial Ledger
+The Accounting application is a Java based tool aimed to use by people to efficiently track amd manage their finances.
+This application allow users to create reports of their expenses and earnings and add new deposits or payments.
+Using transactions.csv users can retrieve and update transactions across different sessions.
+
+###Features
+- Transaction Update: straightforward and user friendly process of adding new deposits and payments to transaction file
+- Ledger View: categorized preview of all transactions entries and separate review of deposits or payments separatly.
+- Custom Reports: option to create reports to specific time frame or vendor name;
+- Search Engine: a flexible search tools allow to filter reports on a multiple criteria such as: vendor, strat and end day,
+amount, description;
+
+**Code examples if filtering report by Vendor name:**
+```private static void displayByVendorName() {
+           System.out.println("Enter the name of the vendor you would like to search for:");
+           String vendorSearchName = scan.nextLine();
+           for(Transaction transaction : transactionsList){
+               if (transaction.getVendor().equalsIgnoreCase(vendorSearchName) ){
+                   transaction.formatAndPrintTransaction();
+               }
+           }
+       }
+
+###
+
+
+
+
+
 
 [LEVEL 1: HOME SCREEN]
     |
@@ -53,3 +82,4 @@
     |
     |
     |── (Command: EXIT APP)
+

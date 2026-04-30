@@ -18,6 +18,7 @@ public class App {
     public static void main(String[] args) {
         displayUserGreeting();
         runHomeScreen();
+//        runFilters();
         //Fix from newest to older display!!!!!!
     }
 
@@ -105,6 +106,43 @@ public class App {
             }
         }
     }
+    //Create a method grand grand child for filters
+    private static void runFilters(){
+        //Options how to filter reports yes or not
+        //If filter than select filters by prompting users
+        System.out.println("Fill in the fields you want to filter by. Press Enter to skip.");
+        System.out.println("Start Date (YYYY-MM-DD):");
+        String startDateInput = scan.nextLine().trim();
+
+        System.out.print("End Date (YYYY-MM-DD): ");
+        String endDateInput = scan.nextLine().trim();
+
+        System.out.print("Description: ");
+        String descriptionInput = scan.nextLine().trim();
+
+        System.out.print("Vendor: ");
+        String vendorInput = scan.nextLine().trim();
+
+        System.out.print("Amount: ");
+        double amountInput = scan.nextDouble();
+
+        //filter arraylist
+        ArrayList<Transaction> filteredList = new ArrayList<>();
+        LocalDate start = LocalDate.parse(startDateInput);
+        LocalDate end = LocalDate.parse(endDateInput);
+        // Start date
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction t = transactionsList.get(i);
+
+            if (!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
+
+                if(t.getDate().isAfter(start) && t.getDate().isBefore(end)){
+                    filteredList.add(t);
+                }
+            }
+        }
+
+    }
 
     private static ArrayList<Transaction> readTransactions(){
         ArrayList<Transaction> transactionsList = new ArrayList<>();
@@ -144,7 +182,6 @@ public class App {
             }
         }
     }
-  //NEED FIX !!!!!!!!!!!!!!!
     private static void displayPreviousYear() {
         LocalDate startOfCurrentYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         int lastYear = LocalDate.now().getYear() - 1;
