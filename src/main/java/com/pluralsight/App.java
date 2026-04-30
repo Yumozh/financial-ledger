@@ -16,9 +16,9 @@ public class App {
     static LocalDate firstDayOfMonth = today.withDayOfMonth(1);
 
     public static void main(String[] args) {
-        displayUserGreeting();
-        runHomeScreen();
-//        runFilters();
+//        displayUserGreeting();
+//        runHomeScreen();
+        displayFilteredTransactionList();
         //Fix from newest to older display!!!!!!
     }
 
@@ -90,6 +90,7 @@ public class App {
                     C) Year To Date Report
                     D) Previous Year Report
                     E) Search By Vendor Report
+                    F) Custom Search
                     1) Back to Ledger
                     Enter command: \s""");
 
@@ -101,13 +102,14 @@ public class App {
                 case "c" -> displayYearToDate();
                 case "d" -> displayPreviousYear();
                 case "e" -> displayByVendorName();
+                case "f" -> displayFilteredTransactionList();
                 case "1" -> inReports = false;
                 default -> System.out.println("Invalid input.");
             }
         }
     }
-    //Create a method grand grand child for filters
-    private static void runFilters(){
+    //Creat filters for customer research
+    private static void displayFilteredTransactionList(){
         //Options how to filter reports yes or not
         //If filter than select filters by prompting users
         System.out.println("Fill in the fields you want to filter by. Press Enter to skip.");
@@ -124,24 +126,48 @@ public class App {
         String vendorInput = scan.nextLine().trim();
 
         System.out.print("Amount: ");
-        double amountInput = scan.nextDouble();
+        String amountInput = scan.nextLine();
 
         //filter arraylist
         ArrayList<Transaction> filteredList = new ArrayList<>();
-        LocalDate start = LocalDate.parse(startDateInput);
-        LocalDate end = LocalDate.parse(endDateInput);
         // Start date
         for (int i = transactionsList.size() - 1; i >= 0; i--) {
             Transaction t = transactionsList.get(i);
-
-            if (!startDateInput.isEmpty() && !endDateInput.isEmpty()) {
-
-                if(t.getDate().isAfter(start) && t.getDate().isBefore(end)){
-                    filteredList.add(t);
+            //Start Date
+            if (!startDateInput.isEmpty()) {
+                LocalDate start = LocalDate.parse(startDateInput);
+                if (t.getDate().isAfter(start)) {
+                    continue;
                 }
             }
+            //End Date
+            if (!endDateInput.isEmpty()) {
+                LocalDate end = LocalDate.parse(endDateInput);
+                if (t.getDate().isBefore(end)) {
+                    continue;
+                }
+            }
+            // Description
+            if(!descriptionInput.isEmpty()){
+                if(t.getDescription().equalsIgnoreCase(descriptionInput)){
+                    continue;
+                }
+            }
+            //Vendor
+            if(!vendorInput.isEmpty()){
+                if(t.getVendor().equalsIgnoreCase(vendorInput)){
+                    continue;
+                }
+            }
+            //Amount
+            if(!amountInput.isEmpty()){
+                if(t.getAmount()== Double.parseDouble(amountInput)){
+                    continue;
+                }
+            }
+            filteredList.add(t);
         }
-
+        printTransactionsList(filteredList);
     }
 
     private static ArrayList<Transaction> readTransactions(){
