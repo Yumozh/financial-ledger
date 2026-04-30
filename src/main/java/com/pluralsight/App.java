@@ -16,10 +16,8 @@ public class App {
     static LocalDate firstDayOfMonth = today.withDayOfMonth(1);
 
     public static void main(String[] args) {
-//        displayUserGreeting();
-//        runHomeScreen();
-        displayFilteredTransactionList();
-        //Fix from newest to older display!!!!!!
+        displayUserGreeting();
+        runHomeScreen();
     }
 
     private static void displayUserGreeting() {
@@ -108,11 +106,10 @@ public class App {
             }
         }
     }
-    //Creat filters for customer research
+
     private static void displayFilteredTransactionList(){
-        //Options how to filter reports yes or not
-        //If filter than select filters by prompting users
-        System.out.println("Fill in the fields you want to filter by. Press Enter to skip.");
+        displayHeader("Fill in the fields you want to filter by. Press Enter to skip.");
+
         System.out.println("Start Date (YYYY-MM-DD):");
         String startDateInput = scan.nextLine().trim();
 
@@ -128,40 +125,39 @@ public class App {
         System.out.print("Amount: ");
         String amountInput = scan.nextLine();
 
-        //filter arraylist
         ArrayList<Transaction> filteredList = new ArrayList<>();
-        // Start date
+
         for (int i = transactionsList.size() - 1; i >= 0; i--) {
             Transaction t = transactionsList.get(i);
-            //Start Date
+
             if (!startDateInput.isEmpty()) {
                 LocalDate start = LocalDate.parse(startDateInput);
-                if (t.getDate().isAfter(start)) {
+                if (t.getDate().isBefore(start)) {
                     continue;
                 }
             }
-            //End Date
+
             if (!endDateInput.isEmpty()) {
                 LocalDate end = LocalDate.parse(endDateInput);
-                if (t.getDate().isBefore(end)) {
+                if (t.getDate().isAfter(end)) {
                     continue;
                 }
             }
-            // Description
+
             if(!descriptionInput.isEmpty()){
-                if(t.getDescription().equalsIgnoreCase(descriptionInput)){
+                if(!t.getDescription().equalsIgnoreCase(descriptionInput)){
                     continue;
                 }
             }
-            //Vendor
+
             if(!vendorInput.isEmpty()){
-                if(t.getVendor().equalsIgnoreCase(vendorInput)){
+                if(!t.getVendor().equalsIgnoreCase(vendorInput)){
                     continue;
                 }
             }
-            //Amount
+
             if(!amountInput.isEmpty()){
-                if(t.getAmount()== Double.parseDouble(amountInput)){
+                if(t.getAmount()!= Double.parseDouble(amountInput)){
                     continue;
                 }
             }
@@ -247,16 +243,15 @@ public class App {
         }
     }
 
-
     private static String initiateNewPayment() {
         LocalDateTime today = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm:ss");
         String formattedDate = today.format(formatter);
         System.out.println();
         System.out.println("Enter a brief description of the payment (e.g., Rent, Groceries): ");
-        String paymentDescription = scan.nextLine();
+        String paymentDescription = scan.nextLine().trim();
         System.out.println("Who is the receiver/vendor? (e.g., Amazon, Landlord): ");
-        String paymentVendor = scan.nextLine();
+        String paymentVendor = scan.nextLine().trim();
         System.out.println("Enter the payment amount ($): ");
         double paymentAmount = scan.nextDouble();
         scan.nextLine();
@@ -269,9 +264,9 @@ public class App {
         String formattedDate = today.format(formatter);
         System.out.println();
         System.out.println("Enter a brief description (e.g., Salary): ");
-        String depositDescription = scan.nextLine();
+        String depositDescription = scan.nextLine().trim();
         System.out.println("Who is the sender/source/vendor? (e.g., Employer):");
-        String depositVendor = scan.nextLine();
+        String depositVendor = scan.nextLine().trim();
         System.out.println("Enter deposit amount ($):");
         double depositAmount = scan.nextDouble();
         scan.nextLine();
@@ -312,7 +307,6 @@ public class App {
         }
     }
 
-    //Generate a list with all payments
     private static ArrayList<Transaction> displayAllPayments(ArrayList<Transaction> transactionsList){
         displayHeader("ALL PAYMENTS");
         ArrayList<Transaction> paymentsList = new ArrayList<>();
@@ -336,7 +330,6 @@ public class App {
         return depositList;
     }
 
-    // Display transactions the list
     private static void printTransactionsList(ArrayList<Transaction> transactionsList){
         System.out.println();
         System.out.printf("%-12s | %-10s | %-25s | %-20s | %-10s %n",
@@ -362,8 +355,8 @@ public class App {
     }
 
     private static void displayHeader(String title){
-        System.out.println("\n==========================================");
-        System.out.println("          " + title.toUpperCase());
-        System.out.println("==========================================");
+        System.out.println("\n==============================================================================");
+        System.out.println("           " + title.toUpperCase());
+        System.out.println("================================================================================");
     }
 }
