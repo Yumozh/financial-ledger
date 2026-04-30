@@ -25,19 +25,19 @@ public class App {
         System.out.println("Hello! Ready to track your spending?");
         System.out.println("Your Financial Overview Starts Here.");
         System.out.println("====================================");
-        System.out.println();
     }
 
     private static void runHomeScreen() {
         boolean isRunning = true;
 
         while (isRunning) {
+            displayHeader("Financial App - HOME SCREEN");
             System.out.print("""
-                    \nHOME SCREEN
+                    \n
                     1) Open Ledger
-                    2) Make Payment
+                    2) Make Payment (Debit)
                     3) Add Deposit
-                    X) Exit Application
+                    X) Exit
                     Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
@@ -56,13 +56,14 @@ public class App {
         boolean inLedgerScreen = true;
 
         while (inLedgerScreen) {
+            displayHeader("Financial App - TRANSACTION LEDGER");
             System.out.print("""
-                    \n     LEDGER SCREEN
-                      1) Open all Reports
+                    \n
+                      1) All Reports
                       A) Display all Transactions
                       B) Display all Deposits
                       C) Display all Payments
-                      R) Return to Home Screen
+                      R) Back to Home
                       Enter command: \s""");
 
             String choice = scan.nextLine().toLowerCase().trim();
@@ -82,9 +83,9 @@ public class App {
         boolean inReports = true;
 
         while (inReports) {
-            System.out.println("\n    ALL REPORTS");
+            displayHeader("Financial App - All Reports");
             System.out.print("""
-                    \n    Options:
+                    \n  Options:
                         A) Month To Date Report
                         B) Previous Month Report
                         C) Year To Date Report
@@ -201,6 +202,7 @@ public class App {
     private static void displayByVendorName() {
         System.out.println("Enter the name of the vendor you would like to search for:");
         String vendorSearchName = scan.nextLine();
+        displayHeader("LEDGER REPORTS BY VENDOR");
         for (Transaction transaction : transactionsList) {
             if (transaction.getVendor().equalsIgnoreCase(vendorSearchName)) {
                 transaction.formatAndPrintTransaction();
@@ -368,6 +370,6 @@ public class App {
     private static void displayHeader(String title) {
         System.out.println("\n==============================================================================");
         System.out.println("           " + title.toUpperCase());
-        System.out.println("================================================================================");
+        System.out.println("===============================================================================\n");
     }
 }
