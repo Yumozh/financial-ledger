@@ -203,7 +203,8 @@ public class App {
         System.out.println("Enter the name of the vendor you would like to search for:");
         String vendorSearchName = scan.nextLine();
         displayHeader("LEDGER REPORTS BY VENDOR");
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getVendor().equalsIgnoreCase(vendorSearchName)) {
                 transaction.formatAndPrintTransaction();
             }
@@ -216,7 +217,8 @@ public class App {
         LocalDate startOfPreviousYear = LocalDate.of(lastYear, 1, 1);
         displayHeader("LEDGER REPORTS PREVIOUS YEAR");
 
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getDate().isBefore(startOfCurrentYear) && transaction.getDate().isAfter(startOfPreviousYear)) {
                 transaction.formatAndPrintTransaction();
             }
@@ -226,7 +228,8 @@ public class App {
     private static void displayYearToDate() {
         LocalDate startOfYear = LocalDate.of(LocalDate.now().getYear(), 1, 1);
         displayHeader("LEDGER REPORT YEAR TO DATE");
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(startOfYear)) {
                 transaction.formatAndPrintTransaction();
             }
@@ -236,7 +239,8 @@ public class App {
     private static void displayPreviousMonth() {
         displayHeader("LEDGER REPORT PREVIOUS MONTH");
         LocalDate firstDayPreviousMonth = today.minusMonths(1).withDayOfMonth(1);
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getDate().isBefore(firstDayOfMonth) && transaction.getDate().isAfter(firstDayPreviousMonth)) {
                 transaction.formatAndPrintTransaction();
             }
@@ -245,7 +249,8 @@ public class App {
 
     private static void displayByMonthToDate() {
         displayHeader("LEDGER REPORT MONTH TO DATE");
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(firstDayOfMonth)) {
                 transaction.formatAndPrintTransaction();
             }
@@ -322,7 +327,8 @@ public class App {
         displayHeader("ALL PAYMENTS");
         ArrayList<Transaction> paymentsList = new ArrayList<>();
 
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getAmount() < 0) {
                 paymentsList.add(transaction);
             }
@@ -334,7 +340,8 @@ public class App {
         displayHeader("ALL DEPOSITS");
         ArrayList<Transaction> depositList = new ArrayList<>();
 
-        for (Transaction transaction : transactionsList) {
+        for (int i = transactionsList.size() - 1; i >= 0; i--) {
+            Transaction transaction = transactionsList.get(i);
             if (transaction.getAmount() > 0) {
                 depositList.add(transaction);
             }
