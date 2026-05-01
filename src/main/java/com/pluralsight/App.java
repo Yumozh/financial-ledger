@@ -130,8 +130,7 @@ public class App {
 
         ArrayList<Transaction> filteredList = new ArrayList<>();
 
-        for (int i = transactionsList.size() - 1; i >= 0; i--) {
-            Transaction t = transactionsList.get(i);
+        for ( Transaction t : transactionsList){
 
             if (!startDateInput.isEmpty()) {
                 LocalDate start = LocalDate.parse(startDateInput);
@@ -249,9 +248,10 @@ public class App {
 
     private static void displayByMonthToDate() {
         displayHeader("LEDGER REPORT MONTH TO DATE");
+        LocalDate tomorrow = today.plusDays(1);
         for (int i = transactionsList.size() - 1; i >= 0; i--) {
             Transaction transaction = transactionsList.get(i);
-            if (transaction.getDate().isBefore(today) && transaction.getDate().isAfter(firstDayOfMonth)) {
+            if (transaction.getDate().isBefore(tomorrow) && !transaction.getDate().isBefore(firstDayOfMonth)) {
                 transaction.formatAndPrintTransaction();
             }
         }
@@ -327,8 +327,7 @@ public class App {
         displayHeader("ALL PAYMENTS");
         ArrayList<Transaction> paymentsList = new ArrayList<>();
 
-        for (int i = transactionsList.size() - 1; i >= 0; i--) {
-            Transaction transaction = transactionsList.get(i);
+        for (Transaction transaction : transactionsList) {
             if (transaction.getAmount() < 0) {
                 paymentsList.add(transaction);
             }
@@ -340,8 +339,7 @@ public class App {
         displayHeader("ALL DEPOSITS");
         ArrayList<Transaction> depositList = new ArrayList<>();
 
-        for (int i = transactionsList.size() - 1; i >= 0; i--) {
-            Transaction transaction = transactionsList.get(i);
+        for (Transaction transaction : transactionsList) {
             if (transaction.getAmount() > 0) {
                 depositList.add(transaction);
             }
