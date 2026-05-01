@@ -116,16 +116,16 @@ public class App {
         System.out.println("Start Date (YYYY-MM-DD):");
         String startDateInput = scan.nextLine().trim();
 
-        System.out.print("End Date (YYYY-MM-DD): ");
+        System.out.println("End Date (YYYY-MM-DD): ");
         String endDateInput = scan.nextLine().trim();
 
-        System.out.print("Description: ");
+        System.out.println("Description: ");
         String descriptionInput = scan.nextLine().trim();
 
-        System.out.print("Vendor: ");
+        System.out.println("Vendor: ");
         String vendorInput = scan.nextLine().trim();
 
-        System.out.print("Amount: ");
+        System.out.println("Amount: ");
         String amountInput = scan.nextLine();
 
         ArrayList<Transaction> filteredList = new ArrayList<>();
