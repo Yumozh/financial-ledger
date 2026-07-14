@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
 
@@ -25,6 +26,50 @@ public class App {
         System.out.println("Hello! Ready to track your spending?");
         System.out.println("Your Financial Overview Starts Here.");
         System.out.println("====================================");
+
+        runSignInScreen();
+    }
+
+    private static void runSignInScreen(){
+        boolean inSignIn = true;
+
+        while (inSignIn){
+            //logging-in menu
+            System.out.println("【 1 】    ✦    【 2 】");
+            System.out.println("Sign-in        Sign-up \n");
+
+            int login = scan.nextInt();
+            scan.nextLine(); //clear buffer
+
+            try {
+                //email input
+                System.out.println("\nEnter Your Email.\n");
+                String email = scan.nextLine().trim();
+                //ensure email is valid
+                while (!email.contains("@") || !email.contains(".com")
+                        && !email.contains(".net") && !email.contains(".org")
+                        || email.length() < 10) {
+
+                    System.out.println("""
+                             \n-----------------------
+                                  Invalid Email. \n""");
+                    System.out.println("Please Enter a Valid Email\n");
+                    email = scan.nextLine();
+
+                }
+
+                System.out.println("""
+                        ---------------------
+                        \nSign-In Successful!""");
+                inSignIn = false;
+                runHomeScreen();
+
+            } catch (InputMismatchException e) {
+                System.out.println("\nInvalid Input. \n");
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
     private static void runHomeScreen() {
