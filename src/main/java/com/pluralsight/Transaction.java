@@ -9,6 +9,9 @@ public class Transaction {
     private String description;
     private String vendor;
     private double amount;
+    private static final String ANSI_RESET = "\u001B[0m";
+    private static final String ANSI_GREEN = "\u001B[32m";
+    private static final String ANSI_RED = "\u001B[31m";
 
     public Transaction() {
     }
@@ -62,7 +65,8 @@ public class Transaction {
     }
 
     public void formatAndPrintTransaction(){
-        System.out.printf("%-12s | %-10s | %-25s | %-20s | $ %.2f \n",
+        String color = this.getAmount() < 0 ? ANSI_RED : ANSI_GREEN;
+        System.out.printf(color + "%-12s | %-10s | %-25s | %-20s | $ %.2f" + ANSI_RESET + "\n",
                 this.getDate(),
                 this.getTime(),
                 this.getDescription(),
