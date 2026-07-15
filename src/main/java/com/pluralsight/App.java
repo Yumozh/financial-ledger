@@ -11,6 +11,14 @@ import java.util.Scanner;
 import java.util.regex.Pattern;
 
 public class App {
+    private static final String RESET = "\u001B[0m";
+    private static final String GREEN = "\u001B[32m";
+    private static final String RED = "\u001B[31m";
+    private static final String BLUE = "\u001B[34m";
+    private static final String YELLOW = "\u001B[33m";
+    private static final String CYAN = "\u001B[36m";
+    private static final String BOLD = "\u001B[1m";
+    private static final String PURPLE = "\u001B[35m";
     static Scanner scan = new Scanner(System.in);
     static ArrayList<Transaction> transactionsList = readTransactions();
     static LocalDate today = LocalDate.now();
@@ -22,10 +30,28 @@ public class App {
     }
 
     private static void displayUserGreeting() {
-        System.out.println("====================================");
-        System.out.println("Hello! Ready to track your spending?");
-        System.out.println("Your Financial Overview Starts Here.");
-        System.out.println("====================================");
+        System.out.println(BOLD + GREEN + """
+               ||====================================================================||
+                ||//$\\\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\//$\\\\||
+                ||(100)==================| FEDERAL RESERVE NOTE |================(100)||
+                ||\\\\$//        ~         '------========--------'                \\\\$//||
+                ||<< /        /$\\              // ____ \\\\                         \\ >>||
+                ||>>|  12    //L\\\\            // ///..) \\\\         L38036133B   12 |<<||
+                ||<<|        \\\\ //           || <||  >\\  ||                        |>>||
+                ||>>|         \\$/            ||  $$ --/  ||        One Hundred     |<<||
+                ||<<|      L38036133B        *\\\\  |\\_/  //* series                 |>>||
+                ||>>|  12                     *\\\\/___\\_//*   1989                  |<<||
+                ||<<\\      Treasurer     ______/Franklin\\________     Secretary 12 />>||
+                ||//$\\                 ~|UNITED STATES OF AMERICA|~               /$\\\\||
+                ||(100)===================  ONE HUNDRED DOLLARS =================(100)||
+                ||\\\\$//\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\/\\\\$//||
+                ||====================================================================||
+            """ );
+
+        System.out.println("    ||====================================================================||");
+        System.out.println(CYAN + "                   Hello! Ready to track your spending?");
+        System.out.println(CYAN + "                   Your Financial Overview Starts Here."+ RESET);
+        System.out.println(GREEN +"    ||====================================================================||\n"+ RESET);
 
         runSignInScreen();
     }
@@ -35,8 +61,8 @@ public class App {
 
         while (inSignIn){
             //logging-in menu
-            System.out.println("【 1 】    ✦    【 2 】");
-            System.out.println("Sign-in        Sign-up \n");
+            System.out.println("                         【 1 】    ✦    【 2 】");
+            System.out.println("                         Sign-in        Sign-up \n");
 
             int login = scan.nextInt();
             scan.nextLine(); //clear buffer
@@ -419,7 +445,7 @@ public class App {
 
     private static void displayHeader(String title) {
         System.out.println("\n==============================================================================");
-        System.out.println("           " + title.toUpperCase());
-        System.out.println("===============================================================================\n");
+        System.out.println("                   " + title.toUpperCase());
+        System.out.println("==============================================================================\n");
     }
 }
