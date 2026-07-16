@@ -14,11 +14,11 @@ public class App {
     private static final String RESET = "\u001B[0m";
     private static final String GREEN = "\u001B[32m";
     private static final String RED = "\u001B[31m";
-    private static final String BLUE = "\u001B[34m";
+    private static final String BLUE = "\u001B[38;5;39m";
     private static final String YELLOW = "\u001B[33m";
     private static final String CYAN = "\u001B[36m";
     private static final String BOLD = "\u001B[1m";
-    private static final String PURPLE = "\u001B[35m";
+    private static final String PURPLE = "\u001B[38;5;93m";
     static Scanner scan = new Scanner(System.in);
     static ArrayList<Transaction> transactionsList = readTransactions();
     static LocalDate today = LocalDate.now();
@@ -69,24 +69,32 @@ public class App {
 
             try {
                 //email input
-                System.out.println("\nEnter Your Email.\n");
+                System.out.println("\n                           Enter Your Email.\n");
                 String email = scan.nextLine().trim();
                 //ensure email is valid
                 while (!email.contains("@") || !email.contains(".com")
                         && !email.contains(".net") && !email.contains(".org")
                         || email.length() < 10) {
 
-                    System.out.println("""
-                             \n-----------------------
-                                  Invalid Email. \n""");
-                    System.out.println("Please Enter a Valid Email\n");
+                    System.out.println(RED + """
+                             \n                         -----------------------
+                                                            Invalid Email
+                                                       -----------------------""" + RESET);
+                    System.out.println("\n                         Please Enter a Valid Email\n");
                     email = scan.nextLine();
 
                 }
 
+                System.out.println(YELLOW + """
+                        \n-                        ---------------------
+                                                  Sign-In Successful!
+                                                 ---------------------""" + RESET);
                 System.out.println("""
-                        ---------------------
-                        \nSign-In Successful!""");
+                        -                                ||
+                                                         ||
+                                                         ||
+                                                         ||
+                                                         ||""");
                 inSignIn = false;
                 runHomeScreen();
 
@@ -103,12 +111,11 @@ public class App {
 
         while (isRunning) {
             displayHeader("Financial App - HOME SCREEN");
-            System.out.println("""
-                    \n
-                    1) Open Ledger
-                    2) Make Payment (Debit)
-                    3) Add Deposit
-                    X) Exit \n""");
+            System.out.println(BLUE + """
+                        1) Open Ledger
+                        2) Make Payment (Debit)
+                        3) Add Deposit
+                    \n    X) Exit \n""" + RESET);
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -116,7 +123,10 @@ public class App {
                 case "1" -> runLedgerScreen();
                 case "2" -> addNewPayment();
                 case "3" -> addNewDeposit();
-                case "x" -> System.exit(0);
+                case "x" -> {
+                    isRunning = false;
+                        System.exit(0);
+                }
                 default -> System.out.println("Invalid input.");
             }
         }
@@ -129,13 +139,13 @@ public class App {
 
         while (inLedgerScreen) {
             displayHeader("Financial App - TRANSACTION LEDGER");
-            System.out.println("""
-                    \n
-                      1) All Reports
-                      A) Display all Transactions
-                      B) Display all Deposits
-                      C) Display all Payments
-                      R) Back to Home \n""");
+            System.out.println(
+                      BLUE + "    1) All Reports \n" +
+                      PURPLE + "    A)" + BLUE + "Display all Transactions\n" +
+                      GREEN + "    B)" + BLUE + " Display all Deposits \n" +
+                      RED + "    C)" + BLUE + "Display all Payments \n\n" +
+                      BLUE + "    R) Back to Home \n" +
+                              "    x) EXIT\n" + RESET);
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -145,6 +155,7 @@ public class App {
                 case "b" -> printTransactionsList(displayAllDeposits(transactionsList));
                 case "c" -> printTransactionsList(displayAllPayments(transactionsList));
                 case "r" -> inLedgerScreen = false;
+                case "x" -> System.exit(0);
                 default -> System.out.println("Invalid input.");
             }
         }
@@ -155,15 +166,19 @@ public class App {
 
         while (inReports) {
             displayHeader("Financial App - All Reports");
-            System.out.println("""
-                    \n  Options:
+            System.out.println(BLUE + """
+                      Options:
                         A) Month To Date Report
                         B) Previous Month Report
+                        
                         C) Year To Date Report
                         D) Previous Year Report
+                        
                         E) Search By Vendor Report
                         F) Custom Search
-                        1) Back to Ledger \n""");
+                        
+                        1) Back to Ledger
+                        X) EXIT\n""" + RESET);
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -175,6 +190,7 @@ public class App {
                 case "e" -> displayByVendorName();
                 case "f" -> displayFilteredTransactionList();
                 case "1" -> inReports = false;
+                case "x" -> System.exit(0);
                 default -> System.out.println("Invalid input.");
             }
         }
@@ -443,8 +459,8 @@ public class App {
     }
 
     private static void displayHeader(String title) {
-        System.out.println("\n==============================================================================");
-        System.out.println("                   " + title.toUpperCase());
-        System.out.println("==============================================================================\n");
+        System.out.println("\n    ||==============================================================================||");
+        System.out.println("                               " + title.toUpperCase());
+        System.out.println("    ||==============================================================================||\n");
     }
 }
