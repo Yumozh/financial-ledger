@@ -49,8 +49,8 @@ public class App {
             """ );
 
         System.out.println("    ||====================================================================||");
-        System.out.println(CYAN + "                   Hello! Ready to track your spending?");
-        System.out.println(CYAN + "                   Your Financial Overview Starts Here."+ RESET);
+        System.out.println(BLUE + "                   Hello! Ready to track your spending?");
+        System.out.println(BLUE + "                   Your Financial Overview Starts Here."+ RESET);
         System.out.println(GREEN +"    ||====================================================================||\n"+ RESET);
 
         runSignInScreen();
@@ -103,13 +103,12 @@ public class App {
 
         while (isRunning) {
             displayHeader("Financial App - HOME SCREEN");
-            System.out.print("""
+            System.out.println("""
                     \n
                     1) Open Ledger
                     2) Make Payment (Debit)
                     3) Add Deposit
-                    X) Exit
-                    Enter command: \s""");
+                    X) Exit \n""");
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -117,10 +116,12 @@ public class App {
                 case "1" -> runLedgerScreen();
                 case "2" -> addNewPayment();
                 case "3" -> addNewDeposit();
-                case "x" -> isRunning = false;
+                case "x" -> System.exit(0);
                 default -> System.out.println("Invalid input.");
             }
         }
+
+
     }
 
     private static void runLedgerScreen() {
@@ -128,14 +129,13 @@ public class App {
 
         while (inLedgerScreen) {
             displayHeader("Financial App - TRANSACTION LEDGER");
-            System.out.print("""
+            System.out.println("""
                     \n
                       1) All Reports
                       A) Display all Transactions
                       B) Display all Deposits
                       C) Display all Payments
-                      R) Back to Home
-                      Enter command: \s""");
+                      R) Back to Home \n""");
 
             String choice = scan.nextLine().toLowerCase().trim();
 
@@ -155,7 +155,7 @@ public class App {
 
         while (inReports) {
             displayHeader("Financial App - All Reports");
-            System.out.print("""
+            System.out.println("""
                     \n  Options:
                         A) Month To Date Report
                         B) Previous Month Report
@@ -163,8 +163,7 @@ public class App {
                         D) Previous Year Report
                         E) Search By Vendor Report
                         F) Custom Search
-                        1) Back to Ledger
-                        Enter command: \s""");
+                        1) Back to Ledger \n""");
 
             String choice = scan.nextLine().toLowerCase().trim();
 
